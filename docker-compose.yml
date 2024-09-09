@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  crm-agent-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: crm-agent
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "${PORT:-7878}:7878"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+    command: >
+      sh -c "if [ '$NODE_ENV' = 'production' ]; then npm run start; else npm run dev; fi"
